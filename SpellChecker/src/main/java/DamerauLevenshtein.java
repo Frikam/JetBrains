@@ -6,12 +6,13 @@ public class DamerauLevenshtein {
      * @param source The source String.
      * @param target The target String.
      * @return The distance between source and target strings.
-     * @throws IllegalArgumentException If either source or target is null.
      */
     public static int calculateDistance(String source, String target) {
         int sourceLength = source.length();
         int targetLength = target.length();
-        if (targetLength == 0) return sourceLength;
+        if (targetLength == 0) {
+            return sourceLength;
+        }
         int[][] dist = new int[sourceLength + 1][targetLength + 1];
         for (int i = 0; i < sourceLength + 1; i++) {
             dist[i][0] = i;

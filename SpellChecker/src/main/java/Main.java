@@ -18,7 +18,7 @@ public class Main {
         readWordsFromDictionary(dictionary, scanner);
 
         if (isRightWord(dictionary, word)) {
-            System.out.println("Вы ввели слово правильно");
+            System.out.println("Word is in the dictionary");
             return;
         }
 
@@ -33,13 +33,14 @@ public class Main {
         }
 
         if (similarWords.isEmpty()) {
-            System.out.println("Либо введенного слова нет в словаре, либо количество ошибок не меньше половины длины слова");
+            System.out.println("Either the entered word is not in the dictionary, or the number of errors is not less than half the length of the word");
         }
         else {
             printSimilarWords(similarWords);
         }
     }
 
+    /** A method that adds to the list of words different from the entered no more than number of possible mistakes */
     public static List<String> filter(Map<Integer, String> map, int lengthOfEnteredWord, int numberOfPossibleMistakes) {
         return map.entrySet().stream()
                 .flatMap(s -> Stream.of(s.getValue()))
@@ -47,6 +48,7 @@ public class Main {
                 .collect(Collectors.toList());
     }
 
+    /** A method that determines the language of the word and selects the desired dictionary */
     public static Scanner chooseDictionary(String word) throws FileNotFoundException {
         if (word.matches(".*[a-z].*")) {
             return new Scanner(new File("Dictionary.txt"));
@@ -54,6 +56,7 @@ public class Main {
         return new Scanner(new File("RussianDictionary.txt"));
     }
 
+    /** A method that adds words from dictionary to hash-table */
     public static void readWordsFromDictionary(Map<Integer, String> dictionary, Scanner scanner) {
         while (scanner.hasNextLine()) {
             String wordFromDictionary = scanner.nextLine();
@@ -61,22 +64,28 @@ public class Main {
         }
     }
 
+    /** A method that checks whether there is a word in the dictionary or not */
     public static boolean isRightWord(Map<Integer, String> dictionary, String word) {
         int hashCode = word.hashCode();
         return dictionary.containsKey(hashCode) && dictionary.get(hashCode).equals(word);
     }
 
+    /** A method that calculates number of possible mistakes */
     public static int countPossibleMistakes(String word) {
         return word.length() / 5 + 1;
     }
 
+    /** A method that prints similar words */
     public static void printSimilarWords(List<String> list) {
-        System.out.println("Похожие слова : ");
+        System.out.println("Similar words : ");
         for (String word : list) {
             System.out.println(word);
         }
     }
 
+    /** A method that calculates Damerau-Levenshtein distance and
+     * if distance less that number of possible mistakes then adds word in list with similar words
+     * */
     public static void findSimilarWords(List<String> dictionary, List<String> similarWords, String word, int numberOfPossibleMistakes) {
         for (String wordFromDictionary : dictionary) {
             if (DamerauLevenshtein.calculateDistance(wordFromDictionary, word) <= numberOfPossibleMistakes) {
