@@ -33,7 +33,7 @@ public class Main {
         }
 
         if (similarWords.isEmpty()) {
-            System.out.println("Либо введенного слова нет в словаре, либо количество ошибок превышает половину букв в слове");
+            System.out.println("Либо введенного слова нет в словаре, либо количество ошибок не меньше половины длины слова");
         }
         else {
             printSimilarWords(similarWords);
